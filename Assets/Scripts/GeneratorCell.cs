@@ -2,18 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GeneratorCell : MonoBehaviour
+public class GeneratorCell
 {
-    public Vector2 pos;
+    public int x { get; private set; }
+    public int z { get; private set; }
+    public int distanceFromStart { get; set; }
+    public bool leftWall = true;
+    public bool bottomWall = true;
+    public bool floor = true;
 
-    public bool leftWall;
-    public bool bottomWall;
+    private CellType _cellType;
 
-    public bool visited;
-
-    public GeneratorCell(int x, int y)
+    public void SetType(CellType type)
     {
-        pos = new Vector2(x, y);
-    }    
+        _cellType = type;
+    }
+
+    public CellType GetCellType()
+    {
+        return _cellType;
+    }
+
+    public bool visited = false;
+
+    public GeneratorCell(int x, int z)
+    {
+        this.x = x;
+        this.z = z;
+    }
 
 }

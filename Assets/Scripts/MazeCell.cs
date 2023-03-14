@@ -1,16 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+public enum CellType
+{
+    Usual,
+    Finish,
+    Dead
+}
 
 public class MazeCell : MonoBehaviour
 {
+    [SerializeField] private GameObject _floor;
     [SerializeField] private GameObject _leftWall;
     [SerializeField] private GameObject _bottomWall;
 
-    public Vector3 _pos;
-    public MazeCell(int xPos, int zPos)
+    public void RemoveComponents(GeneratorCell cell)
     {
-        _pos = new Vector3(xPos, 0, zPos);
+        if (!cell.leftWall)
+            _leftWall.SetActive(false);
+        if (!cell.bottomWall)
+            _bottomWall.SetActive(false);
+        if (!cell.floor)
+            _floor.SetActive(false);
     }
 
 }
