@@ -6,21 +6,9 @@ public class Path : MonoBehaviour
 {
     [SerializeField] public MazeSpawner mazeSpaw;
     [SerializeField] private LineRenderer _lineRenderer;
-    [SerializeField] private Transform player;
 
     private Vector3Int _pathBegin = new Vector3Int(9, 0, 9);
-    List<Vector3> positions = new List<Vector3>();
-    private float speed = 1f;
-
-    private void OnEnable()
-    {
-        mazeSpaw.mazeIsMade += FollowPath;
-    }
-
-    private void OnDisable()
-    {
-        mazeSpaw.mazeIsMade -= FollowPath;
-    }
+    public List<Vector3> positions = new List<Vector3>();
 
     public void DrawPath()
     {
@@ -64,16 +52,7 @@ public class Path : MonoBehaviour
 
     }
 
-    public void FollowPath()
-    {
-        player.position = positions[positions.Count - 1];
-        player.position = Vector3.MoveTowards(player.position, positions[positions.Count - 1], Time.deltaTime * speed);
-        //StartCoroutine(MovingCoroutine)
-    }
-   /* private IEnumerator MovingCoroutine()
-    {
-        yield return Wait
-    }*/
+   // private 
 
     private void Start()
     {

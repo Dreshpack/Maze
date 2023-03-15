@@ -24,11 +24,12 @@ public class MazeSpawner : MonoBehaviour
     public void SelectDeathCells()
     {
         var rand = new System.Random();
-        for(int i = 0; i < _maze.cellsOnWay.Count/6; i++)
+        for (int i = 0; i < _maze.cellsOnWay.Count / 6; i++)
         {
-            int index = rand.Next(_maze.cellsOnWay.Count);
+            int index = rand.Next(_maze.cellsOnWay.Count - 2);
             _maze.cellsOnWay[index].SetType(CellType.Dead);
         }
+        _maze.cellsOnWay[0].SetType(CellType.Finish);
     }
 
     public void CreateMaze()
@@ -56,9 +57,9 @@ public class MazeSpawner : MonoBehaviour
                     cell = Instantiate(_cellPrefab, new Vector3(i * CellSize.x, j * CellSize.y, j * CellSize.z), Quaternion.identity).GetComponent<MazeCell>();
                 }
                 cell.RemoveComponents(_maze.cells[i, j]);
-                mazeIsMade?.Invoke();
             }
         }
+        mazeIsMade?.Invoke();
 
     }
 

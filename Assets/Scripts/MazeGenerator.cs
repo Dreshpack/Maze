@@ -8,7 +8,6 @@ public class MazeGenerator
 
     public Maze FillMaze()
     {
-       // GeneratorCell[,] cells = new GeneratorCell[MAZE_SIZE, MAZE_SIZE];
         Maze maze = new Maze(MAZE_SIZE);
 
         for (int i = 0; i < MAZE_SIZE; i++)
@@ -29,7 +28,7 @@ public class MazeGenerator
             maze.cells[MAZE_SIZE - 1, i].bottomWall = false;
             maze.cells[MAZE_SIZE - 1, i].floor = false;
         }
-        maze.cells[9, 9].SetType(CellType.Finish);
+        //maze.cells[9, 9].SetType(CellType.Finish);
         RemoveWalls(maze.cells);
         return maze;
     }
