@@ -6,9 +6,11 @@ using UnityEngine.UI;
 public class Retry : MonoBehaviour
 {
     [SerializeField] Button _retryButton;
+    [SerializeField] GameObject _panel;
 
     private void Awake()
     {
+        _panel.SetActive(false);
         _retryButton.enabled = false;
     }
 
@@ -27,6 +29,7 @@ public class Retry : MonoBehaviour
     private IEnumerator ReloadButton()
     {
         yield return new WaitForSeconds(2);
+        _panel.SetActive(true);
         _retryButton.enabled = true;
     }
 
@@ -37,6 +40,7 @@ public class Retry : MonoBehaviour
 
     public void ReloadLvl()
     {
+        Debug.Log("rweload");
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
