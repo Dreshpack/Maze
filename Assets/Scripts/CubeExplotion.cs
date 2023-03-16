@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class CubeExplotion : MonoBehaviour
 {
-    [SerializeField] private Material _defaultMaterial;
+    [SerializeField] private GameObject _smallCube;
 
     private float _cubeSize = 0.5f;
     private int _cubesInRow = 5;
 
     private float _cubesPivotDistance;
     private Vector3 _cubesPivot;
-    private MeshRenderer _meshRenderer;
 
     private float _explosionForce = 50f;
     private float _explosionRadius = 4f;
@@ -21,14 +20,12 @@ public class CubeExplotion : MonoBehaviour
 
     void Start()
     {
-        _meshRenderer = GetComponent<MeshRenderer>();
         _cubesPivotDistance = _cubeSize * _cubesInRow / 2;
         _cubesPivot = new Vector3(_cubesPivotDistance, _cubesPivotDistance, _cubesPivotDistance);
     }
 
     public void Explode()
     {
-        _meshRenderer.enabled = false;
         _pieces = new List<GameObject>();
 
         for (int x = 0; x < _cubesInRow; x++)
@@ -62,14 +59,10 @@ public class CubeExplotion : MonoBehaviour
     {
 
         GameObject piece;
-        piece = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        piece = Instantiate(_smallCube);
 
         piece.transform.position = transform.position + new Vector3(_cubeSize * x, _cubeSize * y, _cubeSize * z) - _cubesPivot;
         piece.transform.localScale = new Vector3(_cubeSize, _cubeSize, _cubeSize);
-
-        piece.AddComponent<Rigidbody>();
-        piece.GetComponent<Rigidbody>().mass = _cubeSize;
-        piece.GetComponent<MeshRenderer>().material = _defaultMaterial;
 
         return piece;
     }

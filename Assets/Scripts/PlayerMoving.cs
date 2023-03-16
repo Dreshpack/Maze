@@ -1,35 +1,43 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMoving : MonoBehaviour
 {
     [SerializeField] private Path _path;
-    [SerializeField] private LineRenderer _line;
     [SerializeField] private float _speed = 1f;
     [SerializeField] private Transform _waypoint;
 
     private int _index;
     private Vector3[] _pathDots;
-    private List<Vector3> _dotsList = new List<Vector3>();
+    private bool _isPaused = false;
+
+    private void OnEnable()
+    {
+        UIController.IsPaused += PauseMovement;
+        UIController.IsContinued += UnpauseMovement;
+    }
+
+    private void OnDisable()
+    {
+        UIController.IsPaused -= PauseMovement;
+        UIController.IsContinued -= UnpauseMovement;
+    }
 
     private void Start()
     {
-        _dotsList = _path.positions;
-        _pathDots = _dotsList.ToArray();
+        _pathDots = _path.positions.ToArray();
         _index = _pathDots.Length - 1;
-        NexPoint();
+        NextPoint();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("waypoint"))
         {
-            NexPoint();
+            NextPoint();
         }
     }
 
-    private void NexPoint()
+    private void NextPoint()
     {
         if (_index > 0)
         {
@@ -39,14 +47,24 @@ public class PlayerMoving : MonoBehaviour
 
     }
 
-    public void FollowPath()
+    private void PauseMovement()
     {
+        _isPaused = true;
+    }
+
+    private void UnpauseMovement()
+    {
+        _isPaused = false;
+    }
+
+    private void FollowPath()
+    {
+        if(!_isPaused)
         transform.position = Vector3.MoveTowards(transform.position, _waypoint.position, _speed);
     }
 
     private void FixedUpdate()
     {
         FollowPath();
-        //_player.position = Vector3.MoveTowards(_player.position, _pathDots[5], Time.deltaTime * speed);
     }
 }

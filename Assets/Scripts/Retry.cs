@@ -7,23 +7,18 @@ public class Retry : MonoBehaviour
 {
     [SerializeField] Button _retryButton;
     [SerializeField] GameObject _panel;
+    [SerializeField] PlayerCollision _playerCollision;
+
+    private void OnEnable()
+    {
+        _playerCollision.finishCellTouched += NextLvl;
+        _playerCollision.deadCellTouched += Lose;
+    }
 
     private void Awake()
     {
         _panel.SetActive(false);
         _retryButton.enabled = false;
-    }
-
-    private void OnEnable()
-    {
-        PlayerCollision.finishCellTouched += ReloadLvl;
-        PlayerCollision.deadCellTouched += Lose;
-    }
-
-    private void OnDisable()
-    {
-        PlayerCollision.finishCellTouched -= ReloadLvl;
-        PlayerCollision.deadCellTouched -= Lose;
     }
 
     private IEnumerator ReloadButton()
@@ -40,8 +35,17 @@ public class Retry : MonoBehaviour
 
     public void ReloadLvl()
     {
-        Debug.Log("rweload");
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void NextLvl()
+    {
+        StartCoroutine(NextLvlCoroutine());
+    }
+    private IEnumerator NextLvlCoroutine()
+    {
+        yield return new WaitForSeconds(1.7f);
+        ReloadLvl();
     }
 
 }

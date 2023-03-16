@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class Path : MonoBehaviour
 {
-    [SerializeField] public MazeSpawner mazeSpaw;
     [SerializeField] private LineRenderer _lineRenderer;
 
-    private Vector3Int _pathBegin = new Vector3Int(9, 0, 9);
+    private readonly Vector3Int _pathBegin = new Vector3Int(9, 0, 9);
     public List<Vector3> positions = new List<Vector3>();
 
-    public void DrawPath()
+    public void FindPath(MazeSpawner mazeSpaw)
     {
         Maze maze = mazeSpaw.Maze;
         int x = _pathBegin.x;
@@ -47,14 +46,13 @@ public class Path : MonoBehaviour
             }
         }
         positions.Add(Vector3.zero);
-        _lineRenderer.positionCount = positions.Count;
-        _lineRenderer.SetPositions(positions.ToArray());
+        DrawPath();
 
     }
 
-   // private 
-
-    private void Start()
+    private void DrawPath()
     {
+        _lineRenderer.positionCount = positions.Count;
+        _lineRenderer.SetPositions(positions.ToArray());
     }
 }

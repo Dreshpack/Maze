@@ -36,7 +36,7 @@ public class MazeSpawner : MonoBehaviour
     {
         MazeGenerator mazeGenerator = new MazeGenerator();
         _maze = mazeGenerator.FillMaze();
-        _path.DrawPath();
+        _path.FindPath(this);
         SelectDeathCells();
         for (int i = 0; i < _MAZE_SIZE; i++)
         {

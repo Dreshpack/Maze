@@ -1,33 +1,33 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.SceneManagement;
-using System;
 
 public class Player : MonoBehaviour
 {
     [SerializeField] private PlayerCollision _collision;
     [SerializeField] private MazeSpawner _mazeSpawn;
     [SerializeField] private PlayerMoving _playerMoving;
-    [SerializeField] private Material _defaultmaterial;
-    [SerializeField] private Material _undamageableMaterial;
-    [SerializeField] private MeshRenderer _meshRender;
     [SerializeField] private CubeExplotion _cube;
+    [SerializeField] private Animations _animations;
+    [SerializeField] private PlayerCollision _playerCollision;
 
     private void Awake()
     {
         _playerMoving.enabled = false;
+        _animations = GetComponent<Animations>();
     }
 
     private void OnEnable()
     {
-        PlayerCollision.deadCellTouched += Die;
+        _playerCollision.deadCellTouched += Die;
+        _playerCollision.finishCellTouched += Finish;
         _mazeSpawn.mazeIsMade += StartMove;
     }
 
     private void OnDisable()
     {
-        PlayerCollision.deadCellTouched -= Die;
-        _mazeSpawn.mazeIsMade += StartMove;
+        _playerCollision.deadCellTouched -= Die;
+        _playerCollision.finishCellTouched -= Finish;
+        _mazeSpawn.mazeIsMade -= StartMove;
     }
 
     private void Die()
@@ -35,7 +35,15 @@ public class Player : MonoBehaviour
         Debug.Log("Dead");
         _playerMoving.enabled = false;
         _cube.Explode();
+        _cube.GetComponent<MeshRenderer>().enabled = false;
     }
+
+    private void Finish()
+    {
+        _animations = GetComponent<Animations>();
+        _animations.StartConfetti();
+    }
+
     public void StartUnDamageable()
     {
         StartCoroutine(UnDamageable());
@@ -44,17 +52,17 @@ public class Player : MonoBehaviour
     private IEnumerator UnDamageable()
     {
         _collision.SetDamageable(false);
-        _meshRender.material = _undamageableMaterial;
+        _animations.SetUndamageableMaterial();
         yield return new WaitForSeconds(2);
         _collision.SetDamageable(true);
-        _meshRender.material = _defaultmaterial;
+        _animations.SetDefaultMaterial();
     }
 
 
     public void Damageable()
     {
         _collision.SetDamageable(true);
-        _meshRender.material = _defaultmaterial;
+        _animations.SetDefaultMaterial();
     }
 
     private void StartMove()

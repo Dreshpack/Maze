@@ -7,8 +7,8 @@ public class PlayerCollision : MonoBehaviour
 
     private bool _damageable = true;
 
-    public static Action finishCellTouched;
-    public static Action deadCellTouched;
+    public Action finishCellTouched;
+    public Action deadCellTouched;
 
     public void SetDamageable(bool dam)
     {
