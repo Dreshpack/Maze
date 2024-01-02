@@ -6,9 +6,11 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerCollision _collision;
     [SerializeField] private MazeSpawner _mazeSpawn;
     [SerializeField] private PlayerMoving _playerMoving;
-    [SerializeField] private CubeExplotion _cube;
     [SerializeField] private Animations _animations;
     [SerializeField] private PlayerCollision _playerCollision;
+
+    private float fuel;
+
 
     private void Awake()
     {
@@ -21,6 +23,8 @@ public class Player : MonoBehaviour
         _playerCollision.deadCellTouched += Die;
         _playerCollision.finishCellTouched += Finish;
         _mazeSpawn.mazeIsMade += StartMove;
+       //UIController.Start += StartMove;
+        //StartMove();
     }
 
     private void OnDisable()
@@ -28,14 +32,13 @@ public class Player : MonoBehaviour
         _playerCollision.deadCellTouched -= Die;
         _playerCollision.finishCellTouched -= Finish;
         _mazeSpawn.mazeIsMade -= StartMove;
+        //UIController.Start -= StartMove;
     }
 
     private void Die()
     {
         Debug.Log("Dead");
         _playerMoving.enabled = false;
-        _cube.Explode();
-        _cube.GetComponent<MeshRenderer>().enabled = false;
     }
 
     private void Finish()
@@ -51,17 +54,16 @@ public class Player : MonoBehaviour
 
     private IEnumerator UnDamageable()
     {
-        _collision.SetDamageable(false);
-        _animations.SetUndamageableMaterial();
+        _playerMoving.UpPlane(true);
         yield return new WaitForSeconds(2);
-        _collision.SetDamageable(true);
-        _animations.SetDefaultMaterial();
+        _playerMoving.UpPlane(false);
     }
 
 
     public void Damageable()
     {
         _collision.SetDamageable(true);
+        _playerMoving.UpPlane(false);
         _animations.SetDefaultMaterial();
     }
 

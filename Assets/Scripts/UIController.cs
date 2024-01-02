@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
@@ -10,9 +11,13 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject _continueButton;
     [SerializeField] private Image _dimmingPanel;
     [SerializeField] private PlayerCollision _playerCollision;
+    [SerializeField] private GameObject mainMenu;
+
 
     public static Action IsPaused;
     public static Action IsContinued;
+    public static Action Start;
+    
 
     private void OnEnable()
     {
@@ -58,8 +63,8 @@ public class UIController : MonoBehaviour
         IsContinued?.Invoke();
     }
 
-    public void Exit()
+    public void StartGame()
     {
-        Application.Quit();
+        SceneManager.LoadSceneAsync("Maze");
     }
 }

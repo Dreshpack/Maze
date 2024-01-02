@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerMoving : MonoBehaviour
@@ -5,13 +6,17 @@ public class PlayerMoving : MonoBehaviour
     [SerializeField] private Path _path;
     [SerializeField] private float _speed = 1f;
     [SerializeField] private Transform _waypoint;
+    [SerializeField] private GameObject plane;
 
     private int _index;
     private Vector3[] _pathDots;
     private bool _isPaused = false;
 
+    private bool upPlane = false;
+
     private void OnEnable()
     {
+        
         UIController.IsPaused += PauseMovement;
         UIController.IsContinued += UnpauseMovement;
     }
@@ -29,6 +34,19 @@ public class PlayerMoving : MonoBehaviour
         NextPoint();
     }
 
+    public void UpPlane(bool flag)
+    {
+        upPlane = flag;
+        if (flag)
+        {
+            _waypoint.position = new Vector3(_waypoint.position.x, 11, _waypoint.position.z);
+        }
+        else
+        {
+            _waypoint.position = new Vector3(_waypoint.position.x, 1.1f, _waypoint.position.z);
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("waypoint"))
@@ -44,6 +62,10 @@ public class PlayerMoving : MonoBehaviour
             _index--;
             _waypoint.position = _pathDots[_index];
         }
+        if (upPlane)
+        {
+            _waypoint.position = new Vector3(_waypoint.position.x, 11, _waypoint.position.z);
+        }
 
     }
 
@@ -56,15 +78,23 @@ public class PlayerMoving : MonoBehaviour
     {
         _isPaused = false;
     }
+    
 
     private void FollowPath()
     {
-        if(!_isPaused)
-        transform.position = Vector3.MoveTowards(transform.position, _waypoint.position, _speed);
+        if (!_isPaused)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, _waypoint.position, _speed);
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                Quaternion.LookRotation(_waypoint.position - transform.position), Time.deltaTime * 5);
+        }
     }
 
     private void FixedUpdate()
     {
         FollowPath();
+        if (upPlane)
+        {
+        }
     }
 }

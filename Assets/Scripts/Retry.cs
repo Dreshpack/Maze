@@ -23,7 +23,7 @@ public class Retry : MonoBehaviour
 
     private IEnumerator ReloadButton()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0.1f);
         _panel.SetActive(true);
         _retryButton.enabled = true;
     }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum CellType
@@ -12,6 +13,7 @@ public class MazeCell : MonoBehaviour
     [SerializeField] private GameObject _floor;
     [SerializeField] private GameObject _leftWall;
     [SerializeField] private GameObject _bottomWall;
+    [SerializeField] private List<Transform> buildings;
 
     public void RemoveComponents(GeneratorCell cell)
     {
@@ -21,6 +23,10 @@ public class MazeCell : MonoBehaviour
             _bottomWall.SetActive(false);
         if (!cell.floor)
             _floor.SetActive(false);
+        if (cell.cellType == CellType.Dead)
+        {
+            buildings[Random.Range(0, buildings.Count)].gameObject.SetActive(true);
+        }
     }
 
 }

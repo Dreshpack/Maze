@@ -11,16 +11,16 @@ public class GeneratorCell
     public bool bottomWall = true;
     public bool floor = true;
 
-    private CellType _cellType;
+    public CellType cellType;
 
     public void SetType(CellType type)
     {
-        _cellType = type;
+        cellType = type;
     }
 
     public CellType GetCellType()
     {
-        return _cellType;
+        return cellType;
     }
 
     public bool visited = false;
